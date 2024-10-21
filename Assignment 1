@@ -1,1 +1,112 @@
 
+#1. Answer 
+import random
+
+#rastgele bir sayı üretmek için 1 ve 20 arasından random bir sayı seçilir.
+
+def sayi_tahmin_oyunu():
+    dogru_sayi = random.randint(1, 20) 
+      # 1 ile 20 arasında rastgele bir sayı seçelim
+    print("1 ile 20 arasında bir sayı tahmin et")
+
+    while True:     #tahmin doğru yapılana kadar while döngüsü devam edecek.
+        tahmin = int(input("Tahminin nedir? "))  #input fonksiyonu ile bir tahmin ekleriz. bu tahmini de bir integer'a (int) çeviriyoruz.
+        if tahmin < dogru_sayi:
+            print("Yanlış. Daha büyük bir sayı dene.")
+        elif tahmin > dogru_sayi:
+            print("Yanlış. Daha küçük bir sayı dene.")
+        else:
+            print(f"Tebrikler! Doğru tahmin ettin. Sayı: {dogru_sayi}")
+        break  
+
+#2. Answer
+#sıralı bir dizide hedef değerin indeksini bulmak için döngü metodu kullanacağız
+
+#nums sıralı ve birbirinden farklı tam sayılardan oluşan dizi
+# search_insert fonksiyonun adı
+# target=hedef
+
+def search_insert(nums, target):
+    left, right = 0, len(nums) - 1  # Sol ve sağ uçlar
+    
+    while left <= right:
+        mid = (left + right) // 2  # Ortanca indeks
+        if nums[mid] == target:  # eşitse sonucu döndür
+            return mid
+        elif nums[mid] < target:  # hedeften büyükse sağa kaydır
+            left = mid + 1
+        else:  # Eğer hedeften küçükse, sola kaydır
+            right = mid - 1
+    
+    return left  # Hedef bulunamazsa, sol taraftaki işlemin konumu hedefin yerleştirileceği yeri gösterir
+
+#Örnek
+nums = [1, 3, 5, 6]
+target = 5
+print(search_insert(nums, target))  # Output: 2
+
+
+#3. Answer
+
+#iki binary string ifade a ve b'yi toplayıp yine binary stringe dönüştürmke için int() ve bin() fonksiyonları kullanıcağız.
+#sayıları ondalık sayılara çevirip sonra tekrar binary string haline getireceğiz. 
+
+
+def addBinary(a, b):
+    # İkili dizeleri ondalık sayılara çeviriyoruz
+    sum_decimal = int(a, 2) + int(b, 2)
+    
+    # Toplamı tekrar ikili dizeye çeviriyoruz ve başındaki '0b'yi atıyoruz
+    return bin(sum_decimal)[2:]
+
+# Örnek
+a = "11"
+b = "1"
+print(addBinary(a, b))  # Output: "100"
+
+#4. Answer
+
+#tam sayılardan oluşan bir dizide çift sayıda yer almayan tek elemanı bulmak için 
+# XOR (exclusive OR) işlemini kullanacağız. bu işlem aynı iki sayıyı karşılaştığında sonucu sıfırlar.
+# tek kalan olunca sonuç farklılaşır. 
+
+def singleNumber(nums):
+    result = 0
+    for num in nums:
+        result ^= num  # XOR işlemi
+    return result
+
+# Örnek
+nums = [4, 1, 2, 1, 2]
+print(singleNumber(nums))  # Output: 4
+
+#5. Answer
+
+""" 10 harflik alt dizeleri bulmak için önce bir alt dizi dizide birden fazla bulunuyorsa onu döndürürüz. bunun için sözlük oluşturacağız. """
+
+def tekrarli_DNA_dizisi(s):
+    dizi_sayisi = {}  #sözlüğümüzün adı bu
+    result = []
+    
+    # Eğer dizinin uzunluğu 10'dan küçükse, sonuç döndüremeyiz
+    if len(s) < 10:
+        return result
+    
+    for i in range(len(s) - 9):  # 10 karakter uzunluğundaki alt dizileri almak için
+        altdizi = s[i:i+10]  # 10 harf uzunluğundaki alt dizi
+        if altdizi in dizi_sayisi:
+            dizi_sayisi[altdizi] += 1
+        else:
+            dizi_sayisi[altdizi] = 1
+            
+    # Tekrar eden dizileri bul
+    for altdizi, count in dizi_sayisi.items():
+        if count > 1:
+            result.append(altdizi)
+
+    return result
+
+# Örnek
+s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+print(tekrarli_DNA_dizisi(s))  # Output: ["AAAAACCCCC", "CCCCCAAAAA"]
+
